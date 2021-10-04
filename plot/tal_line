@@ -1,0 +1,27 @@
+---
+title: "Tally_line_normfix_redo"
+author: "JK"
+date: "9 maart 2020"
+output: html_document
+---
+
+```{r setup}
+library(readr)
+library(dplyr)
+
+path = "D:/Nextcloud/PhD/Projects/201909-08 PCa risk SNPs/Cell lines/vsnormaltally/"
+  
+nclinestal <-  read_delim(paste0(path,"normal_sorted.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T)
+
+```
+
+```{r selection}
+nclinestal$enhid <- 1:nrow(nclinestal)
+sel = nclinestal[,c(5,13)]
+
+```
+
+```{r plot line}
+plot(x = sel$enhid, y = sel$ARtal, type= "l", ylab= "AR enhancers", xlab="patients")
+```
