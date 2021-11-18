@@ -1,0 +1,164 @@
+---
+title: "210417_JK_Achilles"
+author: "Jeroen Kneppers"
+date: "4/17/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(ggpubr)
+library(ggrepel)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+library(plyr)
+
+path = "D:/Nextcloud/Science/PhD/Projects/201909-08 PCa risk SNPs/"
+options(readr.num_columns = 0)
+
+lines <- data.frame(read.csv(paste0(path, "Analyses/Dep/PCa_lines.csv"), 
+                             sep  = ";", check.names = F, header = T, stringsAsFactors = T))
+
+ach_pca <- data.frame(read_delim(paste0(path, "Analyses/Dep/200310_achilles_pca.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE))
+
+LN_ARDEGs <- read_delim(paste0(path, "Cell lines/LNCaP/LN_andrDEGv2.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE)
+
+essen <- read_delim(paste0(path, "Analyses/Dep/Achilles_common_essentials.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T)
+
+loops <- read_delim(paste0(path,"Analyses/Dep/GRanges_loops.txt"), 
+     "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T)
+ 
+netw_gns <- read_delim(paste0(path,"Analyses/Dep/netw_genes.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T)
+netw_gns <- data.frame(netw_gns)
+```
+
+```{r genes to enhancers}
+#select genes that loop to AR enhancers, filter for AR differentially expressed genes in LNCAP
+genes <- loops[,c(1,6:7)]
+sel <- merge(genes, ach_pca[,c(1,3,4,7,6,8,10)], by.x = "gene", by.y = "gene")
+sel <- data.frame(sel[sel[,1] %in% LN_ARDEGs$gene_symbol,])
+
+#filter out essential genes
+sel <- sel[!(sel[,1]  %in% essen$gene),]
+
+#make selection of interesting genes from CNV pipeline
+sel <- merge(sel, netw_gns, by.x= c("gene"), by.y= c("gene"))
+sel <- sel[,c(1:3,10:12,4:9)]
+
+sel$bin <- ifelse(sel$ARtal > 59, "shared", "pshared")
+sel$bin <- ifelse(sel$ARtal == 1, "unique", sel$bin)
+
+#format data per cell line, include tally number
+MCF7_dep <- sel[,1:7]
+colnames(MCF7_dep)[7] <- "val"
+MCF7_dep$cline <- "MCF7"
+
+VCAP_dep <- sel[,c(1:6,8)]
+colnames(VCAP_dep)[7] <- "val"
+VCAP_dep$cline <- "VCAP"
+
+LNCAP_s_dep <- sel[,c(1:6,9)]
+colnames(LNCAP_s_dep )[7] <- "val"
+LNCAP_s_dep$cline <- "LNCAP_s"
+
+X22RV1_dep <- sel[,c(1:6,10)]
+colnames(X22RV1_dep)[7] <- "val"
+X22RV1_dep$cline <- "22Rv1"
+
+DU145_dep <- sel[,c(1:6,11)]
+colnames(DU145_dep)[7] <- "val"
+DU145_dep$cline <- "DU145"
+
+PC3_dep <- sel[,c(1:6,12)]
+colnames(PC3_dep)[7] <- "val"
+PC3_dep$cline <- "PC3"
+
+#binding the data in a single dataframe and subsetting for needed columns
+deps <- rbind(MCF7_dep, VCAP_dep, LNCAP_s_dep, X22RV1_dep, DU145_dep, PC3_dep)
+d_deps <- distinct(deps[,c(1,3:8)])
+dd_deps <- distinct(d_deps[,-3])
+```
+
+### Example depency plot for VCAP with fixed jitter seed
+```{r VCAP plot}
+VC_bin_deps <- distinct(VCAP_dep)
+
+
+VC_bin_deps$col <- ifelse(VC_bin_deps$m_call == "GAIN", "red1", "dodgerblue3")
+VC_bin_deps$col <- ifelse(VC_bin_deps$val < -.5, VC_bin_deps$col, "#A9A9A9")
+VC_bin_deps$id <- "VCaP"
+  
+### plots with correct jittered labels - not yet right
+VCdep <- ggplot(VC_bin_deps, aes(x=val, id, color = col)) +  #color = ifelse(val < -.5, ARtal, 0)
+  #scale_color_gradient(low = "dodgerblue3", high = "red1", limits = c(1,max(VC_bin_deps$ARtal))) +
+  scale_colour_identity() +   
+  geom_point(position = position_jitter(seed = 1L), aes(color = col)) +
+  geom_text(data = . %>% filter(val < -.6), size = 2, check_overlap = F,
+              aes(val, id, label = gene)) +
+  geom_hline(yintercept = c(1.5,2.5,3.5), alpha = .2) +
+  theme_classic() + geom_vline(xintercept = -.5, alpha = .5) +
+  xlab("CERES effectivity score") + #ylab("Prostate Cancer cell line") + 
+  labs(color = "ARenh tally") + coord_cartesian(xlim = c(-2, 0.5)) #+
+  #ggtitle("Achilles gene dependencies of PCa cell +R1881 AR DEGs looping to tally enhancers(FDR < .05)")
+
+VCdep
+```
+
+```{r 22Rv1 plot}
+RV_bin_deps <- distinct(X22RV1_dep)
+
+
+RV_bin_deps$col <- ifelse(RV_bin_deps$m_call == "GAIN", "red1", "dodgerblue3")
+RV_bin_deps$col <- ifelse(RV_bin_deps$val < -.5, RV_bin_deps$col, "#A9A9A9")
+RV_bin_deps$id <- "22RV1"
+  
+### plots with correct jittered labels - not yet right
+RVdep <- ggplot(RV_bin_deps, aes(x=val, id, color = col)) +  #color = ifelse(val < -.5, ARtal, 0)
+  #scale_color_gradient(low = "dodgerblue3", high = "red1", limits = c(1,max(RV_bin_deps$ARtal))) +
+  scale_colour_identity() +   
+  geom_point(position = position_jitter(seed = 1L), aes(color = col)) +
+  geom_text(data = . %>% filter(val < -.6), size = 2, check_overlap = F,
+              aes(val, id, label = gene)) +
+  geom_hline(yintercept = c(1.5,2.5,3.5), alpha = .2) +
+  theme_classic() + geom_vline(xintercept = -.5, alpha = .5) +
+  xlab("CERES effectivity score") + #ylab("Prostate Cancer cell line") + 
+  labs(color = "ARenh tally") + coord_cartesian(xlim = c(-2, 0.5)) #+
+  #ggtitle("Achilles gene dependencies of PCa cell +R1881 AR DEGs looping to tally enhancers(FDR < .05)")
+
+RVdep
+```
+
+```{r LNCaP plot}
+LN_bin_deps <- distinct(LNCAP_s_dep)
+
+
+LN_bin_deps$col <- ifelse(LN_bin_deps$m_call == "GAIN", "red1", "dodgerblue3")
+LN_bin_deps$col <- ifelse(LN_bin_deps$val < -.5, LN_bin_deps$col, "#A9A9A9")
+LN_bin_deps$id <- "LNCaP"
+  
+### plots with correct jittered labels - not yet right
+LNdep <- ggplot(LN_bin_deps, aes(x=val, id, color = col)) +  #color = ifelse(val < -.5, ARtal, 0)
+  #scale_color_gradient(low = "dodgerblue3", high = "red1", limits = c(1,max(LN_bin_deps$ARtal))) +
+  scale_colour_identity() +   
+  geom_point(position = position_jitter(seed = 1L), aes(color = col)) +
+  geom_text(data = . %>% filter(val < -.6), size = 2, check_overlap = F,
+              aes(val, id, label = gene)) +
+  geom_hline(yintercept = c(1.5,2.5,3.5), alpha = .2) +
+  theme_classic() + geom_vline(xintercept = -.5, alpha = .5) +
+  xlab("CERES effectivity score") + #ylab("Prostate Cancer cell line") + 
+  labs(color = "ARenh tally") + coord_cartesian(xlim = c(-2, 0.5)) #+
+  #ggtitle("Achilles gene dependencies of PCa cell +R1881 AR DEGs looping to tally enhancers(FDR < .05)")
+
+LNdep
+```
+
+```{r combination plot}
+figure = ggarrange(VCdep, RVdep, LNdep, ncol = 1, nrow = 3, align = "v")
+figure
+```
