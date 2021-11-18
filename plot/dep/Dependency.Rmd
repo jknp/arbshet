@@ -15,25 +15,26 @@ library(tidyr)
 library(tidyverse)
 library(plyr)
 
-path = "D:/Nextcloud/Science/PhD/Projects/201909-08 PCa risk SNPs/"
+#Set path here
+path = ""
 options(readr.num_columns = 0)
 
-lines <- data.frame(read.csv(paste0(path, "Analyses/Dep/PCa_lines.csv"), 
+lines <- data.frame(read.csv(paste0(path, "PCa_lines.csv"), 
                              sep  = ";", check.names = F, header = T, stringsAsFactors = T))
 
-ach_pca <- data.frame(read_delim(paste0(path, "Analyses/Dep/200310_achilles_pca.txt"), 
+ach_pca <- data.frame(read_delim(paste0(path, "200310_achilles_pca.txt"), 
     "\t", escape_double = FALSE, trim_ws = TRUE))
 
-LN_ARDEGs <- read_delim(paste0(path, "Cell lines/LNCaP/LN_andrDEGv2.txt"), 
+LN_ARDEGs <- read_delim(paste0(path, "LN_andrDEGv2.txt"), 
     "\t", escape_double = FALSE, trim_ws = TRUE)
 
-essen <- read_delim(paste0(path, "Analyses/Dep/Achilles_common_essentials.txt"), 
+essen <- read_delim(paste0(path, "Achilles_common_essentials.txt"), 
     "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T)
 
-loops <- read_delim(paste0(path,"Analyses/Dep/GRanges_loops.txt"), 
+loops <- read_delim(paste0(path,"GRanges_loops.txt"), 
      "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T)
  
-netw_gns <- read_delim(paste0(path,"Analyses/Dep/netw_genes.txt"), 
+netw_gns <- read_delim(paste0(path,"netw_genes.txt"), 
     "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T)
 netw_gns <- data.frame(netw_gns)
 ```
