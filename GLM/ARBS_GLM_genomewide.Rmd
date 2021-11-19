@@ -118,7 +118,6 @@ cohort_enhscore <- function(query, patenhids, gene, RNA)
   if(!length(result[,colSums(is.na(result))<nrow(result)])){
     return(list())
   }
-  
 }
 
 #function for processing data for a GLM per ARBS landscape and reporting ARBS with significant effect on expression
@@ -224,6 +223,7 @@ glm_hits <- foreach(i = 1:length(genelist)) %do% {
 }
 names(glm_hits) <- genelist
 
+#Saving glm genomwide results in easily accessible rds object
 saveRDS(glm_hits, file = paste0(path,"210927_glm_hits.rds"))
 ``` 
 
