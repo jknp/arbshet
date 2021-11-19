@@ -1,0 +1,264 @@
+---
+title: "210930_GLM"
+author: "JK"
+date: "30-9-2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(ggplot2)
+library(GenomicRanges)
+library(tidyr)
+library(tibble)
+library(reshape)
+library(RColorBrewer)
+library(ggpubr)
+library(gridExtra)
+library(NMF)
+library(pcalg)
+library(viridis)
+
+#Specify path with AR peaklists here
+path = ""
+options(readr.num_columns = 0)
+
+#Index AR peaklists
+index <- list.files(path, pattern="\\.bed", all.files=FALSE, full.names=FALSE)
+
+#Load ARBS ranking and H3K27ac overlap
+artal <- data.frame(read_delim(paste0(path, "Porto_ARenh.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T), stringsAsFactors = F)
+
+k27ac_overlap <- data.frame(read_delim(paste0(path, "AR27ac_overlap.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T), stringsAsFactors = F)
+
+#ARBS looping to genes (H3K27ac Hi-ChIP)
+gene_enh <- data.frame(read_delim(paste0(path, "210616_ARBSloop_genes.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T), stringsAsFactors = F)
+  
+#RNAseq files
+Rindex <- data.frame(read_delim(paste0(path, "RNA_index.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T))
+
+RNA <- as.data.frame(read_delim(paste0(path, "PORTO_PT_RNAseq.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T), stringsAsFactors = F)
+
+#GSM number renaming
+names(RNA) <- Rindex$Name[match(names(RNA), Rindex$Sample)]
+names(RNA)[1] <- "gene"
+
+#visualization palette
+plt = brewer.pal(11, "RdBu")
+```
+
+```{r function definitions}
+#function to report enhids per patient
+enhid_report <- function(filename, artal)
+{
+  #intializing patient
+  pat <- data.frame(read_delim(paste0(path, filename), "\t", col_names = c("chr", "start", "end", "peak", "score"),
+                               show_col_types = F))
+  patgr <- makeGRangesFromDataFrame(df= pat, keep.extra.columns = T)
+  
+  #initialzing artal
+  argr <- makeGRangesFromDataFrame(df= artal, keep.extra.columns = T)
+  
+  #finding matches
+  overlaps <- findOverlaps(query = patgr, subject = argr, type = "any")
+  out <- data.frame(argr[subjectHits(overlaps),], patgr[queryHits(overlaps),])
+  out <- out[,c(1:3,6:8,15)]
+  return(out)
+}
+
+#creating matrix for GLM with ChIP peakscores
+cohort_enhscore <- function(query, patenhids, gene, RNA)
+{
+  #intializing output list, creating a dummy vector based on enhid query length
+  res = list()
+  dummy <- rep(NA, length(query))
+  names(dummy) <- query
+  
+  #This loop creates a list of patients containing named vectors of enhids with MACS scores
+  for (i in 1:length(patenhids)){
+    
+    y <- patenhids[[i]][which(patenhids[[i]] %in% query)]
+    z <- patscores[[i]][which(patenhids[[i]] %in% query)]
+    
+    if(length(y) > 0){
+      dummy2 <- dummy
+      names(z) = y
+      dummy2[names(z)] <- z
+      
+      res[[i]] <- dummy2
+      names(res)[i] <- names(patenhids[i])
+      
+    } else{
+      res[[i]] <- dummy
+      names(res)[i] <- names(patenhids[i])
+    }
+  }
+  result = data.frame(do.call(rbind,res))
+  if(length(result[,colSums(is.na(result))<nrow(result)]) > 0){
+    #log2 transform MACS scores
+    result = log(result,2)
+
+  #RNAseq matching
+    result <- tibble::rownames_to_column(result, "id")
+    result <- add_column(result, substr(result$id, 1, 10), .after = "id")
+    colnames(result)[2] <- "GSM"
+  
+    test <- tibble::rownames_to_column(data.frame(t(RNA[which(RNA$gene == gene),])), "id")
+    result <- merge(result, test[,1:2], by.x = "GSM", by.y = "id")
+    names(result)[length(names(result))]<-"TPM"
+  
+  return(result)
+  }
+  
+  if(!length(result[,colSums(is.na(result))<nrow(result)])){
+    return(list())
+  }
+  
+}
+
+#function for processing data for a GLM per ARBS landscape and reporting ARBS with significant effect on expression
+GLM_genome <- function(gene, RNA){
+  result = list()
+  enhids <- as.vector(unique(gene_enh$enhid[which(gene_enh$gene == gene)]))
+  
+  if(!length(enhids)){
+    return(result)
+  }
+  if(length(enhids) > 0){
+    scores <- cohort_enhscore(enhids, patenhids, gene, RNA)
+    
+    if(!length(scores)){
+      return(result)
+    }
+    if(TRUE %in% !colSums(is.na(scores))<nrow(scores)){
+      scores <- Filter(function(x)!all(is.na(x)), scores)
+    }
+    if(length(scores) == 3){
+      return(result)
+    }
+    if(length(scores) > 0){
+      sel <- scores[,colSums(is.na(scores))<nrow(scores)]
+      sel$TPM <- as.numeric(sel$TPM)
+
+      sel3 <- sel[,-2]
+      sel3[is.na(sel3)] = 0
+      rownames(sel3) <- sel3[,1]
+      
+      arbs <- as.matrix(sel3[,c(-1, -length(colnames(sel3))), drop=FALSE])
+      expr <- as.matrix(sel3[,c(length(colnames(sel3))), drop=FALSE])
+
+      linmod <- glm(expr ~ arbs, family = "gaussian")
+      
+      result <- c(summary(linmod)$coefficients[which(summary(linmod)$coefficients[,4] < 0.05),4])
+      result <- result[-1]
+      
+      if(!length(result)){
+        return(list())
+      }
+      if(length(result) > 0){
+        if(nchar(names(result[1])) == 4){
+          names(result) = paste0("arbs",colnames(arbs))
+        }
+        return(result)
+      }
+    }
+  }
+}
+```
+
+```{r prepping dataframes, filtering for H3K27ac containing ARBS}
+argr <- makeGRangesFromDataFrame(df= artal, keep.extra.columns = T)
+k27gr <- makeGRangesFromDataFrame(df= k27ac_overlap, keep.extra.columns = F)
+
+overlaps <- findOverlaps(query = argr, subject = k27gr, type = "any")
+out <- data.frame(k27gr[subjectHits(overlaps),], argr[queryHits(overlaps),])
+
+k27enh <- as.vector(out$enhid)
+k27artal <- artal[artal$enhid %in% k27enh, ]
+
+#list of enhids per patient
+patenhids = list()
+for (i in 1:length(index)){
+  pat = substr(index[i],1, nchar(index[i])-4)
+
+  z = enhid_report(index[i],k27artal)
+  patenhids[[i]] <- z[,6]
+  names(patenhids)[i] <- pat
+}
+
+#list of scores per patient, in same order as enhids
+patscores = list()
+for (i in 1:length(index)){
+  pat = substr(index[i],1, nchar(index[i])-4)
+
+  z = enhid_report(index[i], k27artal)
+  patscores[[i]] <- z[,7]
+  names(patscores)[i] <- pat
+}
+```
+
+```{r GLM loop genome-wide while finding most significant ARBS per gene}
+library(doParallel)
+#doing this loop in parallel takes ~10 minutes instead of 60
+genelist <- as.vector(RNA$gene)
+
+#Preparing parallel computing
+n.cores <- parallel::detectCores() - 1
+my.cluster <- parallel::makeCluster(
+  n.cores, 
+  type = "PSOCK"
+  )
+print(my.cluster)
+doParallel::registerDoParallel(cl = my.cluster)
+foreach::getDoParRegistered()
+
+glm_hits <- list()
+glm_hits <- foreach(i = 1:length(genelist)) %do% {
+  gene = genelist[i]
+  GLM_genome(gene, RNA)
+}
+names(glm_hits) <- genelist
+
+saveRDS(glm_hits, file = paste0(path,"210927_glm_hits.rds"))
+``` 
+
+```{r CITED2 enhancer query and plot}
+CIenhids <- as.vector(unique(gene_enh$enhid[which(gene_enh$gene == "CITED2")]))
+enhCI <- cohort_enhscore(CIenhids, patenhids, "CITED2", RNA)
+
+#remove columns with all NA
+sel <- enhCI[,colSums(is.na(enhCI))<nrow(enhCI)]
+
+#length(sel), length is 18. Ordering these levels manually:
+sel$GSM <- factor(sel$GSM, levels = sel$GSM[order(sel[,3], sel[,4], sel[,5], sel[,6], sel[,7], sel[,8],
+                                            sel[,9], sel[,10], sel[,11], sel[,12], sel[,13], sel[,14],
+                                            sel[,15], sel[,16], sel[,17], sel[,18], decreasing = T, na.last = T)])
+
+sel2 <- melt(sel[order(sel$TPM, decreasing = T, na.last = T),])
+sel2$value <- as.numeric(sel2$value)
+
+c1 <- ggplot(data = sel2, mapping = aes(x = variable, y = GSM, fill = value)) +
+  scale_fill_viridis(na.value = "gray85") + 
+  geom_tile(color = "black", size = .1, height =1.01) + ylab(label = "") + xlab("ARBS Rank") +
+  theme_minimal() + theme(axis.text.y=element_text(size = 6)) +
+  theme(axis.ticks.y = element_blank()) + theme(axis.ticks.x = element_blank()) +
+  theme(axis.text.x= element_text(angle = 45, size = 5))
+
+sel$TPM <- as.numeric(sel$TPM)
+sel$RNA <- "RNA     "
+
+c2 <- ggplot(data = sel, mapping = aes(x = RNA, y = GSM, fill = TPM)) +
+  scale_fill_gradientn(colours = rev(plt[c(-11,-1)])) +
+  geom_tile(color = "black", size = .1, height = 1.01) + ylab(label = "") + xlab("Expression (TPM)") +
+  theme_minimal() + theme(axis.ticks.y = element_blank()) +
+  theme(axis.text.y=element_blank()) + theme(axis.text.x= element_text(angle = 45, size = 5))
+
+p <- grid.arrange(c1, c2, widths = c(5,1))
+p <- annotate_figure(p, top = text_grob("Patient ARBS+H3K27ac presence and RNA expression of CITED2", color = "black", size = 14))
+p
+```
