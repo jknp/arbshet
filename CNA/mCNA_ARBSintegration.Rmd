@@ -18,7 +18,10 @@ loc = data.frame(read_delim(paste0(path, "Quigley/CN/index.txt"),
 
 talenh <- data.frame(read_delim(paste0(path, "AR_enh.txt"), 
     "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T))
-
+    
+enhloop <- data.frame(read_delim(paste0(path, "ARenh_loops.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T))
+s_enhloop <- distinct(enhloop[,c(9,12:18)])
 ``` 
 
 
@@ -33,4 +36,37 @@ geneRanges <-
     genes
     }
 
+```
+
+```{r CNA at ranked ARBS}
+#Two outputs: All ranked ARBS affected by LOSS and GAIN and all enhancers looping to promoter genes
+result = vector(mode = "list")
+gns <- geneRanges(Homo.sapiens, column="SYMBOL")
+gns <- rmchr(gns)
+
+for (i in loc$JK_index){
+  #load patient cnv info, cleanup, remove REFs for speedup 
+  patcnv <- data.frame(read_delim(paste0(path, loc$path[i]), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = F))
+
+  colnames(patcnv) <- c("chr", "start", "end", "call", "val", "strd")
+  patcnv <- patcnv[,-6]
+  
+  ##keep REF call for later gene whitelisting
+  wlist <- patcnv[which(patcnv$call == "REF"),]
+  patcnv <- patcnv[which(patcnv$call != "REF"),]
+  
+  gr_talenh = makeGRangesFromDataFrame(df= talenh, keep.extra.columns = T)
+  grcnv = makeGRangesFromDataFrame(df= patcnv, keep.extra.columns = T)
+  grcnv = rmchr(grcnv)
+  
+  overlaps <- findOverlaps(query = grcnv, subject = gr_talenh, type = "any")
+  cnvenh <- data.frame(gr_talenh[subjectHits(overlaps),], grcnv[queryHits(overlaps),])
+  cnvenh <- cnvenh[, c(-5:-6, -9:-13)]
+  result[[i]] = cnvenh
+}
+
+result = do.call(rbind, result)
+
+write_delim(result, path = paste0(path, "CNAenh.txt"), "\t", col_names = T) 
 ```
