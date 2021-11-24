@@ -70,3 +70,20 @@ result = do.call(rbind, result)
 
 write_delim(result, path = paste0(path, "CNAenh.txt"), "\t", col_names = T) 
 ```
+
+```{r clean up and get gains / loss per enh CNA}
+test <- distinct(result[,5:7])
+talenh_gain <- test[which(test$call == "GAIN"),]
+talenh_loss <- test[which(test$call == "LOSS"),]
+
+gCNA_tal <- merge(talenh, talenh_gain, by.x = c("enhid", "ARtal"), by.y = c("enhid", "ARtal"), all = TRUE)
+gCNA_tal[is.na(gCNA_tal)] <- 0
+gCNA_tal$gain <- ifelse(gCNA_tal$call == "GAIN", 1, 0)
+
+lCNA_tal <- merge(talenh, talenh_loss, by.x = c("enhid", "ARtal"), by.y = c("enhid", "ARtal"), all = TRUE)
+lCNA_tal[is.na(lCNA_tal)] <- 0
+lCNA_tal$loss <- ifelse(lCNA_tal$call == "LOSS", 1, 0)
+
+CNA_comb <- gCNA_tal[,c(1,8)]
+CNA_comb$loss <- lCNA_tal[,8]
+```
