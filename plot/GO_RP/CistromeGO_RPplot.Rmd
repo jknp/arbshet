@@ -1,0 +1,39 @@
+---
+title: "GORP_selection_plots"
+author: "JK"
+date: "16-11-2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(tidyverse)
+library(ggpubr)
+library(ggplot2)
+
+options(readr.num_columns = 0)
+path = "C:/Nextcloud/Science/PhD/Projects/201909-08 PCa risk SNPs/Bed/tarbvmet/cistrome_GO/"
+
+
+cistrp <- data.frame(read.delim(paste0(path, "211115_cistrome_supp.txt")))
+
+
+```
+
+
+```{r plots}
+cs <- cistrp[which(cistrp$type == "case"),]
+ct <- cistrp[which(cistrp$type == "control"),]
+
+a <- ggplot(cs) + geom_point(aes(x = Rank_by_RPscore, y = RPscore, color=ifelse(RPscore>0.05, 'red', 'black'))) +
+  scale_color_identity() + ggtitle("Case ARBS gene regulatory potential") + theme_bw() + 
+  geom_vline(xintercept = 1026)
+
+
+b <- ggplot(ct) + geom_point(aes(x = Rank_by_RPscore, y = RPscore, color=ifelse(RPscore>0.05, 'red', 'black'))) +
+  scale_color_identity() + ggtitle("Control ARBS gene regulatory potential") + theme_bw() + 
+  geom_vline(xintercept = 524)
+
+
+ggarrange(a,b, nrow =2)
+```
