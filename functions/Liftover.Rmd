@@ -1,0 +1,44 @@
+---
+title: "LiftOver"
+author: "JK"
+date: "16 january 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(rtracklayer)
+library(readr)
+library(GenomicRanges)
+
+path = ""
+
+#Loading liftover file
+mSNV38 <- read_delim(paste0(path, "mSNVmerge38.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = F)
+colnames(mSNV38) <- c("chr", "start", "end", "rsid", "base", "mut", "patid")
+
+#transforming to GRanges
+cur <- makeGRangesFromDataFrame(mSNV38, keep.extra.columns = T, ignore.strand = T)
+```
+
+```{r liftOver}
+#Have hg38to19 chain file ready
+.libPaths() #find pacakages location, rtracklayer, extdata etc
+
+ch = import.chain(paste0(path,"hg38ToHg19.over.chain"))
+seqlevelsStyle(cur) = "UCSC"  # necessary
+cur19 = liftOver(cur, ch)
+class(cur19)
+```
+
+```{r export}
+#processing to make neat
+cur19df <- as.data.frame(cur19)
+cur19df <- cur19df[,c(3:5,8:11)]
+colnames(cur19df)[1] <- "chr"
+cur19df[is.na(cur19df)] <- ""
+
+#export
+setwd(path)
+write.table(cur19df, file = "mSNVmerge19.txt", sep = "\t", col.names = T )
+```
