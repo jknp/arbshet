@@ -1,0 +1,46 @@
+---
+title: "SeqPos TF motif z-score Wordcloud "
+author: "JK"
+date: "9 september 2021"
+output: html_document
+---
+```{r setup, echo=F}
+library(wordcloud)
+library(RColorBrewer)
+library(readr)
+
+#Input path here
+path = ""
+options(readr.num_columns = 0)
+
+combi <- data.frame(read_delim(paste0(path, "210909_seqpos8_combi.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T), stringsAsFactors = T)
+```
+
+```{r controls wordcloud}
+ctrl <- combi[which(combi$type == "control"),]
+
+selctrl <- ctrl[-which(duplicated(ctrl$factor)),]
+colourCount =length(unique(selctrl$DBDid))
+
+setwd(path)
+pdf("met_control8_specific.pdf") 
+wordcloud(as.character(selctrl$factor), abs(selctrl$zscore), scale=c(5,0.2), max.words=100, 
+          random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, 
+          colors= colorRampPalette(brewer.pal(8, "Accent"))(colourCount)[as.numeric(selctrl$DBDid)], 
+          ordered.colors = T)
+dev.off()
+
+case <- combi[which(combi$type == "case"),]
+
+selcase <- case[-which(duplicated(case$factor)),]
+colourCount =length(unique(selcase$DBDid))
+
+setwd(path)
+pdf("met_case8_specific.pdf") 
+wordcloud(as.character(selcase$factor), abs(selcase$zscore), scale=c(5,0.2), max.words=100, 
+          random.order=FALSE, rot.per=0.35, use.r.layout=FALSE, 
+          colors= colorRampPalette(brewer.pal(8, "Accent"))(colourCount)[as.numeric(selcase$DBDid)], 
+          ordered.colors = T)
+dev.off()
+```
