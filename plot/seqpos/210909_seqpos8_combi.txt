@@ -1,0 +1,132 @@
+clusters	collapsed_id	factor	DNA binding domain	DBDid	hits	cutoff	zscore	-10*log(pval)	similarity to top	mean_position	type
+11	MS00730 	ZNF435	BetaBetaAlpha-zinc finger Family	5	372	1.181	-5.708	189.789		-0.085	case
+13	MS00556 	GRHL1	CP2 Transcription Factor Domain Family	6	642	4.699	-5.252	164.045		-0.061	case
+13	MS00579 	TFCP2	CP2 Transcription Factor Domain Family	6	466	5.429	-4.88	144.479	0.961	-0.068	case
+16	M00644 	UBP1	CP2 Transcription Factor Domain Family	6	969	5.895	-3.205	73.006	0.834	-0.036	case
+10	MS00838 	ELF5	Ets Domain Family	7	783	5.754	-5.966	205.266	0.999	-0.061	case
+10	MC00151 	SPI1	Ets Domain Family	7	79	8.057	-3.358	78.418	0.828	-0.125	case
+10	MS00040 	SPIC	Ets Domain Family	7	72	8.767	-3.109	69.701	0.848	-0.124	case
+26	MA0081 	SPIB	Ets Domain Family	7	32	7.722	-3.13	70.418		-0.184	case
+1	MC00311 	FOXA1	Forkhead Domain Family	1	1015	5.395	-23.762	690.776		-0.171	case
+1	MC00217 	FOXA2	Forkhead Domain Family	1	1204	4.682	-21.951	690.776	0.987	-0.145	case
+1	MS00354 	FOXC2	Forkhead Domain Family	1	1068	6.221	-15.797	690.776	0.92	-0.115	case
+1	MS00351 	FOXC1	Forkhead Domain Family	1	1172	5.624	-15.629	690.776	0.942	-0.109	case
+1	MA0030 	FOXF2	Forkhead Domain Family	1	1494	3.034	-9.849	517.14	0.879	-0.065	case
+3	MS00359 	FOXD3	Forkhead Domain Family	1	921	6.417	-18.151	690.776		-0.141	case
+3	MS00348 	FOXB1	Forkhead Domain Family	1	807	6.357	-17.765	690.776	0.923	-0.148	case
+3	MS00362 	FOXI1	Forkhead Domain Family	1	980	5.489	-17.679	690.776	0.986	-0.133	case
+3	MS00356 	FOXD2	Forkhead Domain Family	1	1038	6.095	-17.509	690.776	0.992	-0.128	case
+3	MC00501 	FOXP1	Forkhead Domain Family	1	952	6.199	-15.331	690.776	0.977	-0.119	case
+3	MS00387 	FOXP3	Forkhead Domain Family	1	1195	5.774	-15.029	690.776	0.968	-0.104	case
+3	MS00372 	FOXL1	Forkhead Domain Family	1	1245	5.423	-13.93	690.776	0.983	-0.095	case
+3	MA0031 	FOXD1	Forkhead Domain Family	1	818	6.113	-13.717	690.776	0.948	-0.117	case
+3	MS00378 	FOXO3	Forkhead Domain Family	1	1499	3.299	-11.966	690.776	0.922	-0.076	case
+3	MS00367 	FOXJ3	Forkhead Domain Family	1	1540	4.68	-6.88	265.357	0.883	-0.048	case
+4	M00809 	FOXH1	Forkhead Domain Family	1	993	5.795	-11.89	690.776		-0.093	case
+4	M00289 	FOXI1	Forkhead Domain Family	1	813	6.607	-10.859	622.679	0.949	-0.096	case
+4	MA0041 	FOXD3	Forkhead Domain Family	1	751	6.654	-7.47	308.491	0.899	-0.074	case
+5	MS00349 	FOXC1	Forkhead Domain Family	1	791	6.368	-9.527	485.669	0.918	-0.087	case
+5	MS00373 	FOXL1	Forkhead Domain Family	1	1290	4.955	-9.011	437.26	0.974	-0.065	case
+7	MS00350 	FOXC1	Forkhead Domain Family	1	279	7.194	-9.099	445.378		-0.142	case
+7	MS00358 	FOXD3	Forkhead Domain Family	1	122	9.492	-8.084	357.014	0.968	-0.196	case
+7	MS00352 	FOXC2	Forkhead Domain Family	1	492	6.346	-8.062	355.149	0.992	-0.097	case
+7	MS00355 	FOXD2	Forkhead Domain Family	1	94	10.07	-6.971	271.751	0.965	-0.199	case
+14	MS00369 	FOXJ3	Forkhead Domain Family	1	909	2.371	-4.407	121.602		-0.045	case
+15	MS00375 	FOXO1	Forkhead Domain Family	1	340	3.146	-4.262	114.996		-0.072	case
+15	MS00381 	FOXO4	Forkhead Domain Family	1	356	2.992	-3.905	99.65	0.98	-0.066	case
+15	MS00384 	FOXO6	Forkhead Domain Family	1	527	2.689	-3.408	80.262	0.966	-0.05	case
+22	MS00360 	FOXG1	Forkhead Domain Family	1	793	-0.868	-3.642	89.083		-0.043	case
+20	M01592 	TFCP2L1	Grainyhead	8	596	5.191	-3.291	76.035	0.995	-0.046	case
+16	M00712 	MYOG	Helix-Loop-Helix Family	8	743	6.627	-4.162	110.582		-0.048	case
+6	MS00511 	HOXD13	Homeodomain Family	2	504	5.462	-9.402	473.673	0.971	-0.108	case
+6	MS00485 	HOXA13	Homeodomain Family	2	270	6.619	-8.763	414.953	0.954	-0.14	case
+6	MS00505 	HOXC13	Homeodomain Family	2	203	7.104	-8.762	414.901	0.971	-0.162	case
+6	MS00489 	HOXB13	Homeodomain Family	2	238	7.046	-8.633	403.482	0.974	-0.148	case
+6	MS00480 	HOXA10	Homeodomain Family	2	957	5.095	-6.629	248.024	0.924	-0.059	case
+6	MS00506 	HOXD11	Homeodomain Family	2	428	6.407	-6.617	247.241	0.931	-0.089	case
+6	MS00496 	HOXC10	Homeodomain Family	2	1154	4.83	-6.156	217.112	0.936	-0.051	case
+6	MS00497 	HOXC11	Homeodomain Family	2	1186	4.602	-6.013	208.161	0.922	-0.05	case
+6	MS00503 	HOXC12	Homeodomain Family	2	1120	3.395	-5.864	199.108	0.913	-0.05	case
+6	MS00836 	HOXD12	Homeodomain Family	2	1445	3.573	-5.557	181.05	0.919	-0.042	case
+8	MS00510 	HOXD13	Homeodomain Family	2	283	7.87	-8.627	403.02		-0.135	case
+8	MS00504 	HOXC13	Homeodomain Family	2	706	6.397	-8.344	378.664	0.993	-0.083	case
+8	MS00495 	HOXC10	Homeodomain Family	2	609	6.703	-8.021	351.869	0.971	-0.087	case
+8	MS00488 	HOXB13	Homeodomain Family	2	498	6.817	-7.961	346.953	0.989	-0.095	case
+8	MS00494 	HOXC10	Homeodomain Family	2	661	6.593	-7.663	323.332	0.967	-0.08	case
+8	MS00498 	HOXC11	Homeodomain Family	2	913	5.956	-7.59	317.665	0.953	-0.068	case
+8	MS00425 	CDX1	Homeodomain Family	2	1256	5.212	-7.528	312.901	0.966	-0.057	case
+8	UP00207 	HOXB9	Homeodomain Family	2	1055	4.681	-7.5	310.739	0.887	-0.062	case
+8	MS00502 	HOXC12	Homeodomain Family	2	669	6.398	-7.084	279.879	0.949	-0.075	case
+8	MS00481 	HOXA10	Homeodomain Family	2	785	6.272	-7.016	275	0.96	-0.069	case
+8	MS00484 	HOXA13	Homeodomain Family	2	284	7.822	-6.918	268.055	0.989	-0.113	case
+8	MS00507 	HOXD11	Homeodomain Family	2	429	6.83	-6.171	218.05	0.931	-0.084	case
+8	MC00389 	CDX2	Homeodomain Family	2	629	6.191	-5.806	195.623	0.897	-0.066	case
+8	MS00837 	HOXD12	Homeodomain Family	2	622	6.439	-5.128	157.352	0.931	-0.061	case
+8	UP00213 	HOXA9	Homeodomain Family	2	501	6.391	-4.692	135.147	0.861	-0.064	case
+12	UP00197 	HOXC9	Homeodomain Family	2	1030	4.748	-5.507	178.219		-0.05	case
+24	MS00222 	TEAD3	Homeodomain Family	2	126	8.303	-3.269	75.231		-0.098	case
+2	MC00468 	AR	Hormone-nuclear Receptor Family	3	471	6.869	-20.239	690.776		-0.219	case
+2	MC00465 	NR3C1	Hormone-nuclear Receptor Family	3	709	5.598	-20.016	690.776	0.976	-0.176	case
+2	MC00170 	PGR	Hormone-nuclear Receptor Family	3	665	6.075	-18.791	690.776	0.847	-0.171	case
+2	MS00662 	NR3C2	Hormone-nuclear Receptor Family	3	449	4.335	-18.565	690.776	0.945	-0.208	case
+25	MS00652 	NR2E1	Hormone-nuclear Receptor Family	3	1019	5.448	-3.231	73.927		-0.035	case
+17	MC00371 	JUNB	Leucine Zipper Family	9	44	9.935	-4.141	109.65		-0.193	case
+17	MS00319 	JDP2	Leucine Zipper Family	9	43	9.332	-3.616	88.061	0.907	-0.177	case
+21	M00159 	CEBPA	Leucine Zipper Family	9	631	6.021	-3.709	91.711		-0.049	case
+5	MS00115 	NFIX	Nuclear Factor I-CCAAT-binding Transcription Factor (NFI-CTF) Family	4	619	5.085	-11.417	685.354		-0.115	case
+5	MS00114 	NFIB	Nuclear Factor I-CCAAT-binding Transcription Factor (NFI-CTF) Family	4	1286	0.762	-9.934	525.63	0.976	-0.07	case
+9	MS00822 	NFIX	Nuclear Factor I-CCAAT-binding Transcription Factor (NFI-CTF) Family	4	1414	5.033	-7.509	311.479		-0.054	case
+9	MS00820 	NFIA	Nuclear Factor I-CCAAT-binding Transcription Factor (NFI-CTF) Family	4	774	6.26	-6.622	247.596	0.985	-0.066	case
+9	MA0161 	NFIC	Nuclear Factor I-CCAAT-binding Transcription Factor (NFI-CTF) Family	4	1515	5.051	-6.371	230.869	0.984	-0.046	case
+19	MS00162 	RFX2	RFX Domain Family	10	696	-0.137	-3.635	88.818	0.986	-0.046	case
+23	MS00732 	CPEB1	RRM	11	241	7.676	-3.433	81.177		-0.074	case
+18	MS00182 	GMEB2	Sand Domain Family	12	1382	-1.069	-4.091	107.497		-0.035	case
+1	MC00311 	FOXA1	Forkhead Domain Family	1	439	4.445	-13.854	690.776	0.993	-0.162	control
+1	MC00217 	FOXA2	Forkhead Domain Family	1	459	4.175	-13.04	690.776	0.986	-0.15	control
+1	MS00354 	FOXC2	Forkhead Domain Family	1	377	6.015	-11.953	690.776	0.94	-0.154	control
+1	MS00351 	FOXC1	Forkhead Domain Family	1	358	5.933	-11.864	690.776	0.95	-0.157	control
+1	MA0030 	FOXF2	Forkhead Domain Family	1	447	3.569	-7.81	334.858	0.874	-0.099	control
+3	MS00359 	FOXD3	Forkhead Domain Family	1	384	5.822	-11.422	685.974		-0.147	control
+3	MS00362 	FOXI1	Forkhead Domain Family	1	298	6.097	-11.212	661.981	0.989	-0.164	control
+3	MS00348 	FOXB1	Forkhead Domain Family	1	301	6.154	-10.218	554.584	0.924	-0.151	control
+3	MS00356 	FOXD2	Forkhead Domain Family	1	430	5.565	-10.087	541.166	0.991	-0.125	control
+3	MS00372 	FOXL1	Forkhead Domain Family	1	537	3.847	-9.761	508.415	0.98	-0.108	control
+3	MA0031 	FOXD1	Forkhead Domain Family	1	330	5.661	-9.689	501.392	0.948	-0.138	control
+3	MC00501 	FOXP1	Forkhead Domain Family	1	460	5.162	-9.234	457.893	0.976	-0.112	control
+3	MS00387 	FOXP3	Forkhead Domain Family	1	450	5.356	-8.725	411.583	0.967	-0.108	control
+3	MS00378 	FOXO3	Forkhead Domain Family	1	196	6.038	-8.056	354.705	0.923	-0.154	control
+3	MS00367 	FOXJ3	Forkhead Domain Family	1	440	5.231	-5.998	207.226	0.888	-0.081	control
+5	MS00373 	FOXL1	Forkhead Domain Family	1	455	4.411	-5.64	185.842		-0.076	control
+5	MS00349 	FOXC1	Forkhead Domain Family	1	287	5.874	-3.324	77.199	0.933	-0.066	control
+6	MS00358 	FOXD3	Forkhead Domain Family	1	250	6.201	-5.262	164.568		-0.098	control
+6	MS00350 	FOXC1	Forkhead Domain Family	1	144	6.4	-4.762	138.558	0.955	-0.119	control
+6	MS00352 	FOXC2	Forkhead Domain Family	1	391	4.223	-4.24	114	0.954	-0.067	control
+6	MS00355 	FOXD2	Forkhead Domain Family	1	353	5.289	-3.886	98.827	0.993	-0.067	control
+8	MS00360 	FOXG1	Forkhead Domain Family	1	382	-2.201	-4.696	135.347		-0.073	control
+11	MS00369 	FOXJ3	Forkhead Domain Family	1	552	-1.605	-3.669	90.147		-0.051	control
+12	MS00366 	FOXJ2	Forkhead Domain Family	1	347	4.534	-3.27	75.291	0.988	-0.06	control
+4	MS00504 	HOXC13	Homeodomain Family	2	318	5.714	-7.37	300.902		-0.112	control
+4	MS00488 	HOXB13	Homeodomain Family	2	201	6.596	-6.871	264.751	0.996	-0.134	control
+4	MS00510 	HOXD13	Homeodomain Family	2	288	5.94	-5.915	202.17	0.995	-0.099	control
+4	MS00484 	HOXA13	Homeodomain Family	2	238	6.564	-5.79	194.662	0.995	-0.108	control
+4	MS00498 	HOXC11	Homeodomain Family	2	475	4.626	-5.683	188.355	0.943	-0.075	control
+4	MS00481 	HOXA10	Homeodomain Family	2	467	4.655	-5.568	181.671	0.953	-0.075	control
+4	MS00494 	HOXC10	Homeodomain Family	2	195	6.605	-5.349	169.347	0.957	-0.112	control
+4	MC00389 	CDX2	Homeodomain Family	2	176	6.632	-5.286	165.855	0.884	-0.117	control
+4	UP00207 	HOXB9	Homeodomain Family	2	259	5.406	-5.063	153.922	0.877	-0.093	control
+4	MS00507 	HOXD11	Homeodomain Family	2	281	5.813	-4.779	139.429	0.916	-0.086	control
+4	MS00495 	HOXC10	Homeodomain Family	2	347	5.594	-4.75	137.991	0.96	-0.077	control
+4	MS00425 	CDX1	Homeodomain Family	2	318	5.808	-4.554	128.473	0.954	-0.078	control
+4	MS00502 	HOXC12	Homeodomain Family	2	323	5.585	-3.878	98.508	0.936	-0.069	control
+4	MS00837 	HOXD12	Homeodomain Family	2	339	5.389	-3.29	76.005	0.908	-0.061	control
+7	MC00520 	MEIS1	Homeodomain Family	2	115	6.8	-3.601	87.482	0.95	-0.109	control
+9	UP00128 	POU3F2	Homeodomain Family	2	276	4.436	-3.836	96.784	0.856	-0.074	control
+9	UP00221 	PHOX2A	Homeodomain Family	2	173	5.149	-3.723	92.265	0.861	-0.092	control
+9	UP00252 	HOXC5	Homeodomain Family	2	340	4.091	-3.405	80.145	0.95	-0.062	control
+9	UP00113 	HOXC4	Homeodomain Family	2	216	5.053	-3.168	71.727	0.953	-0.074	control
+12	UP00197 	HOXC9	Homeodomain Family	2	292	5.061	-3.384	79.359		-0.067	control
+1	MC00465 	NR3C1	Hormone-nuclear Receptor Family	3	199	6.078	-13.079	690.776	0.975	-0.231	control
+1	MC00468 	AR	Hormone-nuclear Receptor Family	3	207	6.085	-12.126	690.776	0.984	-0.212	control
+2	MS00662 	NR3C2	Hormone-nuclear Receptor Family	3	212	3.331	-11.799	690.776	0.935	-0.204	control
+2	MC00170 	PGR	Hormone-nuclear Receptor Family	3	204	6.312	-10.47	580.86	0.824	-0.188	control
+10	MA0161 	NFIC	Nuclear Factor I-CCAAT-binding Transcription Factor (NFI-CTF) Family	4	532	4.989	-3.774	94.284		-0.053	control
