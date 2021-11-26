@@ -10,7 +10,7 @@ library(rtracklayer)
 library(readr)
 library(GenomicRanges)
 
-path = "D:/Nextcloud/D Projects/201909-08 PCa risk SNPs/mSV/"
+path = ""
 
 #Loading liftover file
 mSNV38 <- read_delim(paste0(path, "mSNVmerge38.txt"), 
@@ -25,7 +25,7 @@ cur <- makeGRangesFromDataFrame(mSNV38, keep.extra.columns = T, ignore.strand = 
 #Have hg38to19 chain file ready
 .libPaths() #find pacakages location, rtracklayer, extdata etc
 
-ch = import.chain("D:/D Projects/201909-08 PCa risk SNPs/mSV/extdata/hg38ToHg19.over.chain")
+ch = import.chain(paste0(path,"hg38ToHg19.over.chain"))
 seqlevelsStyle(cur) = "UCSC"  # necessary
 cur19 = liftOver(cur, ch)
 class(cur19)
