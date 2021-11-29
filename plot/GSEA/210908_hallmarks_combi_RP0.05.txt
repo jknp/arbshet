@@ -1,0 +1,28 @@
+Gene Set Name	# Genes in Gene Set (K)	Description	# Genes in Overlap (k)	k/K	p-value	FDR q-value	id
+HALLMARK_TNFA_SIGNALING_VIA_NFKB	200	Genes regulated by NF-kB in response to TNF [GeneID=7124].	15	0.075	2.83E-09	1.42E-07	top5p
+HALLMARK_ANDROGEN_RESPONSE	100	Genes defining response to androgens.	11	0.11	6.98E-09	1.75E-07	top5p
+HALLMARK_KRAS_SIGNALING_UP	200	Genes up-regulated by KRAS activation.	10	0.05	4.48E-05	7.47E-04	top5p
+HALLMARK_ESTROGEN_RESPONSE_EARLY	200	Genes defining early response to estrogen.	9	0.045	2.36E-04	2.95E-03	top5p
+HALLMARK_IL2_STAT5_SIGNALING	199	Genes up-regulated by STAT5 in response to IL2 stimulation.	8	0.0402	1.08E-03	1.08E-02	top5p
+HALLMARK_ANDROGEN_RESPONSE	100	Genes defining response to androgens.	30	0.3	1.02E-20	5.10E-19	un
+HALLMARK_CHOLESTEROL_HOMEOSTASIS	74	Genes involved in cholesterol homeostasis.	20	0.2703	2.52E-13	6.30E-12	un
+HALLMARK_P53_PATHWAY	200	Genes involved in p53 pathways and networks.	30	0.15	5.85E-12	9.75E-11	un
+HALLMARK_MTORC1_SIGNALING	200	Genes up-regulated through activation of mTORC1 complex.	27	0.135	7.46E-10	9.32E-09	un
+HALLMARK_ESTROGEN_RESPONSE_EARLY	200	Genes defining early response to estrogen.	25	0.125	1.53E-08	1.28E-07	un
+HALLMARK_TNFA_SIGNALING_VIA_NFKB	200	Genes regulated by NF-kB in response to TNF [GeneID=7124].	25	0.125	1.53E-08	1.28E-07	un
+HALLMARK_ADIPOGENESIS	200	Genes up-regulated during adipocyte differentiation (adipogenesis).	22	0.11	1.02E-06	7.28E-06	un
+HALLMARK_FATTY_ACID_METABOLISM	158	Genes encoding proteins involved in metabolism of fatty acids.	19	0.1203	1.44E-06	8.97E-06	un
+HALLMARK_ESTROGEN_RESPONSE_LATE	200	Genes defining late response to estrogen.	21	0.105	3.75E-06	2.08E-05	un
+HALLMARK_HYPOXIA	200	Genes up-regulated in response to low oxygen levels (hypoxia).	20	0.1	1.31E-05	6.56E-05	un
+HALLMARK_CHOLESTEROL_HOMEOSTASIS	74	Genes involved in cholesterol homeostasis.	11	0.1486	2.04E-06	1.02E-04	mcase
+HALLMARK_DNA_REPAIR	150	Genes involved in DNA repair.	13	0.0867	9.82E-05	2.45E-03	mcase
+HALLMARK_ESTROGEN_RESPONSE_EARLY	200	Genes defining early response to estrogen.	15	0.075	1.52E-04	2.53E-03	mcase
+HALLMARK_ESTROGEN_RESPONSE_LATE	200	Genes defining late response to estrogen.	14	0.07	5.01E-04	4.18E-03	mcase
+HALLMARK_GLYCOLYSIS	200	Genes encoding proteins involved in glycolysis and gluconeogenesis.	14	0.07	5.01E-04	4.18E-03	mcase
+HALLMARK_INTERFERON_GAMMA_RESPONSE	200	Genes up-regulated in response to IFNG [GeneID=3458].	14	0.07	5.01E-04	4.18E-03	mcase
+HALLMARK_MTORC1_SIGNALING	200	Genes up-regulated through activation of mTORC1 complex.	13	0.065	1.54E-03	1.10E-02	mcase
+HALLMARK_UV_RESPONSE_DN	144	Genes down-regulated in response to ultraviolet (UV) radiation.	10	0.0694	3.23E-03	2.02E-02	mcase
+HALLMARK_WNT_BETA_CATENIN_SIGNALING	42	Genes up-regulated by activation of WNT signaling through accumulation of beta catenin CTNNB1 [GeneID=1499].	5	0.119	3.67E-03	2.04E-02	mcase
+HALLMARK_ADIPOGENESIS	200	Genes up-regulated during adipocyte differentiation (adipogenesis).	12	0.06	4.39E-03	2.20E-02	mcase
+HALLMARK_DNA_REPAIR	150	Genes involved in DNA repair.	10	0.0667	2.52E-05	1.26E-03	mctrl
+HALLMARK_P53_PATHWAY	200	Genes involved in p53 pathways and networks.	11	0.055	5.92E-05	1.48E-03	mctrl
