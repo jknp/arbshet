@@ -1,0 +1,54 @@
+---
+title: "Bubbleplot GSEA analysis"
+author: "JK"
+date: "3 juni 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+library(ggpubr)
+library(ggplot2)
+library(RColorBrewer)
+
+#Add path to hallmark results here
+path = ""
+options(readr.num_columns = 0)
+
+hmcombi <- data.frame(read_delim(paste0(path, "210908_hallmarks_combi_RP0.05.txt"), 
+    "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T), stringsAsFactors = F)
+
+colnames(hmcombi) <- c("geneset", "gsetsize", "description", "gset_overlap", "k", "pval", "FDRqval", "id")
+ids <- unique(hmcombi$id)
+```
+
+```{r bubble plots, more uniformly}
+sel5 <- hmcombi[which(hmcombi$id == ids[1] | hmcombi$id == ids[2]),]
+sel6 <- hmcombi[which(hmcombi$id == ids[3] | hmcombi$id == ids[4]),]
+
+e <- ggplot(sel5, aes(x=pval, y= reorder(geneset, FDRqval*pval), size=gset_overlap, colour=k)) + 
+  geom_point() + facet_wrap(~id, ncol = 2, strip.position = "right") +
+  theme_light() + scale_color_continuous(low="blue", high="red") + 
+  labs(x="-log10(FDRq * pvalue)", y="", size="overlapping genes", colour="Overlap / geneset size") +
+  geom_vline(xintercept = c(2), linetype="dotted")
+
+f <- ggplot(sel6, aes(x=pval, y= reorder(geneset, FDRqval*pval), size=gset_overlap, colour=k)) + 
+  geom_point() + facet_wrap(~id, ncol = 2, strip.position = "right") +
+  theme_light() + scale_color_continuous(low="blue", high="red") + 
+  labs(x="-log10(FDRq * pvalue)", y="", size="overlapping genes", colour="Overlap / geneset size") +
+  geom_vline(xintercept = c(2), linetype="dotted")
+
+figure <- ggarrange(e,f,nrow=2, vjust =T)
+figure
+setwd(path)
+ggsave(file="bubble_facet.pdf", width =18, height = 4)
+
+e
+setwd(path)
+ggsave(file="bubble_top_vs_un.pdf", width =12, height = 4)
+
+f
+setwd(path)
+ggsave(file="bubble_metun_casevsctrl.pdf", width =12, height = 4)
+```
