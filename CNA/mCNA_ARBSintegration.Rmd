@@ -13,17 +13,19 @@ library(NMF)
 path = ""
 options(readr.num_columns = 0)
 
-loc = data.frame(read_delim(paste0(path, "Quigley/CN/index.txt"), 
+#CNA locations
+loc = data.frame(read_delim(paste0(path, "index.txt"), 
     "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T))
 
+#AR enhancers
 talenh <- data.frame(read_delim(paste0(path, "AR_enh.txt"), 
     "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T))
-    
+
+#Unique interacting AR enhancers with promoters
 enhloop <- data.frame(read_delim(paste0(path, "ARenh_loops.txt"), 
     "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T))
 s_enhloop <- distinct(enhloop[,c(9,12:18)])
 ``` 
-
 
 ```{r helper functions, echo = FALSE}
 geneRanges <- 
@@ -35,7 +37,6 @@ geneRanges <-
     mcols(genes)[[column]] <- as.character(unlist(col))
     genes
     }
-
 ```
 
 ```{r CNA at ranked ARBS}
@@ -45,7 +46,7 @@ gns <- geneRanges(Homo.sapiens, column="SYMBOL")
 gns <- rmchr(gns)
 
 for (i in loc$JK_index){
-  #load patient cnv info, cleanup, remove REFs for speedup 
+  #load patient cnv info, cleanup, remove REFs for speeding up computations 
   patcnv <- data.frame(read_delim(paste0(path, loc$path[i]), 
     "\t", escape_double = FALSE, trim_ws = TRUE, col_names = F))
 
@@ -65,7 +66,6 @@ for (i in loc$JK_index){
   cnvenh <- cnvenh[, c(-5:-6, -9:-13)]
   result[[i]] = cnvenh
 }
-
 result = do.call(rbind, result)
 
 write_delim(result, path = paste0(path, "CNAenh.txt"), "\t", col_names = T) 
@@ -76,14 +76,17 @@ test <- distinct(result[,5:7])
 talenh_gain <- test[which(test$call == "GAIN"),]
 talenh_loss <- test[which(test$call == "LOSS"),]
 
+#Gains
 gCNA_tal <- merge(talenh, talenh_gain, by.x = c("enhid", "ARtal"), by.y = c("enhid", "ARtal"), all = TRUE)
 gCNA_tal[is.na(gCNA_tal)] <- 0
 gCNA_tal$gain <- ifelse(gCNA_tal$call == "GAIN", 1, 0)
 
+#Losses
 lCNA_tal <- merge(talenh, talenh_loss, by.x = c("enhid", "ARtal"), by.y = c("enhid", "ARtal"), all = TRUE)
 lCNA_tal[is.na(lCNA_tal)] <- 0
 lCNA_tal$loss <- ifelse(lCNA_tal$call == "LOSS", 1, 0)
 
+#Combine in dataframe
 CNA_comb <- gCNA_tal[,c(1,8)]
 CNA_comb$loss <- lCNA_tal[,8]
 ```
