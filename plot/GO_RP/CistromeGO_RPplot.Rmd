@@ -29,7 +29,6 @@ a <- ggplot(cs) + geom_point(aes(x = Rank_by_RPscore, y = RPscore, color=ifelse(
 b <- ggplot(ct) + geom_point(aes(x = Rank_by_RPscore, y = RPscore, color=ifelse(RPscore>0.05, 'red', 'black'))) +
   scale_color_identity() + ggtitle("Control ARBS gene regulatory potential") + theme_bw() + 
   geom_vline(xintercept = 524)
-
-
+  
 ggarrange(a,b, nrow =2)
 ```
