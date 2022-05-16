@@ -9,7 +9,7 @@ output: html_document
 library(readr)
 library(dplyr)
 
-path = "D:/Nextcloud/PhD/Projects/201909-08 PCa risk SNPs/Cell lines/vsnormaltally/"
+path = "" #enter path here
   
 nclinestal <-  read_delim(paste0(path,"normal_sorted.txt"), 
     "\t", escape_double = FALSE, trim_ws = TRUE, col_names = T)
