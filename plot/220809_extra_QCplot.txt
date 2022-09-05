@@ -1,0 +1,78 @@
+---
+title: "220809_extraQC"
+author: "JK"
+date: "9-8-2022"
+output: html_document
+---
+
+Extra QC -his code forms the basis of Supplementary Figure 2.
+
+To further show that ARBS found in very few patients (UN-ARBS and PS-ARBS found in 2-5 patients) are real signal,
+and that low read depth does not influence analyses nor conclusions, we reanalyzed data by
+excluding according to ENCODE guidelines (v4, Jul 2020) on read depth.
+
+High RD: 20+ million reads
+Low RD: 10-20 million reads
+Insufficient RD: 5-10 million reads
+
+
+```{r setup, include=FALSE}
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(reshape)
+library(ggpubr)
+library(DiffBind)
+library(GenomicRanges)
+library(NMF)
+library(RColorBrewer)
+library(ggridges)
+library(sm)
+
+options(readr.num_columns = 0)
+
+#Multiple paths; path input Supplement Table 3; path1 input ranked tumor ARBS 
+path = ""
+path1 =  ""
+
+qcchip <- read.delim(paste0(path, "220810_AR_ChIP_QCscores.txt"), 
+    header = T, sep = "\t", strip.white = TRUE)
+
+patenhids <- readRDS(file = paste0(path1,"220329_enhids_nofilt.rds")) #unfiltered only AR enhIDs per patient
+
+artal <- data.frame(read.delim(paste0(path1, "Porto_ARenh.txt"), 
+    header = T, sep = "\t", strip.white = TRUE), stringsAsFactors = F)
+```
+
+```{r reads frip qc plot}
+encreads <- qcchip[,c(3:5,8:12)]
+encreads$enccat <- "High read depth"
+encreads$enccat[which(encreads$mapped.as.single.read < 20000000)] <- "Low read depth"
+encreads$enccat[which(encreads$mapped.as.single.read < 10000000)] <- "Insufficient read depth"
+
+
+a <- ggplot(encreads, aes(Patient_ID, mapped.as.single.read, fill = enccat)) + geom_bar(stat="identity") +
+  theme_bw() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + xlab("Patient") +
+  ylab("Mapped as single read") + geom_hline(yintercept = c(20000000,10000000))
+
+b <- ggplot(encreads, aes(Patient_ID, FRiP.score, fill = enccat)) + geom_bar(stat="identity") +
+  theme_bw() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + xlab("Patient") +
+  ylab("FRiP")
+
+c <- ggplot(encreads, aes(FRiP.score, mapped.as.single.read, color = enccat)) + geom_point() +
+  theme_bw() + xlab("FRiP") + ylab("Mapped as single read")
+
+sfig2a = ggarrange(a,c,nrow =2)
+```
+
+```{r nsc rsc}
+c1 <- ggplot(encreads, aes(NSC, mapped.as.single.read, color = enccat)) + geom_point() +
+  theme_bw() + xlab("NSC") + ylab("Mapped as single read") + theme(legend.position="none")
+
+c2 <- ggplot(encreads, aes(RSC, mapped.as.single.read, color = enccat)) + geom_point() +
+  theme_bw() + xlab("RSC") + ylab("") + theme(legend.position="none")
+
+sfig = ggarrange(c1,c2,ncol = 2)
+```
